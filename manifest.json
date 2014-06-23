@@ -1,0 +1,41 @@
+{
+    "name": "SCM-Manager",
+    "id": "scmmanager",
+    "description": {
+        "en": "The easiest way to share and manage your Git, Mercurial and Subversion repositories over http",
+        "fr": "La facon la plus simple de gérer ses dépots Git, Mercurial et Subversion par http"
+    },
+    "developer": {
+        "name": "",
+        "email": "",
+        "url": "http://www.scm-manager.org/"
+    },
+    "multi_instance": "true",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for SCM-Manager"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for SCM-Manager"
+                },
+                "example": "/scmmanager",
+                "default": "/scmmanager"
+            },
+            {
+                "name": "admin",
+                "ask": {
+                    "en": "Choose the SCM-Manager administrator (must be an existing YunoHost user)"
+                },
+                "example": "homer"
+            }
+        ]
+    }
+}
+
