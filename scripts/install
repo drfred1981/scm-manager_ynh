@@ -9,7 +9,7 @@ user=$3
 SCMMANAGERAPP="http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.38/scm-server-1.38-app.tar.gz"
 SCMMANAGERAPPFILE="scm-server-1.38-app.tar.gz"
 
-scmname=scmmanager
+
 
 
 # Check user parameter
@@ -20,10 +20,10 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 
-sudo yunohost app setting $scmname admin_user -v $user
+sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a $scmname
+sudo yunohost app checkurl $domain$path -a scmmanager
 if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
@@ -34,8 +34,8 @@ sudo apt-get install -y openjdk-7-jre default-jre-headless
 
 
 # Copy files to the right place
-final_path=/opt/yunohost/$scmname
-data_path=/home/yunohost.app/$scmname
+final_path=/opt/yunohost/scmmanager
+data_path=/home/yunohost.app/scmmanager
 sudo mkdir -p $final_path
 sudo mkdir -p $data_path
 
@@ -49,10 +49,10 @@ sudo cp ../conf/init-scm-server /etc/init.d/scm-server
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
 
-cd /tmp 
-wget $SCMMANAGERAPP 
+
+wget -P /tmp $SCMMANAGERAPP 
 tar xzvf /tmp/$SCMMANAGERAPPFILE
-mv /tmp/$SCMMANAGERAPPFILE /opt/yunohost/$scmname
+mv /tmp/$SCMMANAGERAPPFILE/scm-server /opt/yunohost/scmmanager
 
 
 
@@ -67,14 +67,15 @@ sudo chmod -R 770 $data_path
 chmod +x /etc/init.d/scm-server
 chown -R scmserver:scmserver /opt/scm-server/
 update-rc.d scm-server defaults
+sudo service scm-server start
 
-
-
+# Add scm-server service to YunoHost's monitoring
+sudo yunohost service add scm-server --log /var/log/scm-server/ --status "ps aux | grep scm-server | grep -v grep"
 
 
 # Reload Nginx and regenerate SSOwat conf
-sudo service nginx reload
-sudo yunohost app setting $path skipped_uris -v "/"
-sudo yunohost app ssowatconf
 
+sudo service scm-server restart
+sudo service nginx reload
+sudo yunohost app ssowatconf
 
