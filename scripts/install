@@ -52,8 +52,8 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
 
 wget -P /tmp $SCMMANAGERAPP 
 tar xzvf /tmp/$SCMMANAGERAPPFILE
-sudo mv scm-server /opt/yunohost/scmmanager
-
+sudo mv scm-server scmmanager
+sudo mv scmmanager /opt/yunohost/
 
 
 sudo useradd -d $data_path scmserver
