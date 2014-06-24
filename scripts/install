@@ -41,14 +41,20 @@ sudo mkdir -p $data_path
 
 # Install SCM-Manager
 
+# Copy files to the right place
+sudo cp ../conf/default-scm-server /etc/default/scm-server
+sudo cp ../conf/init-scm-server /etc/init.d/scm-server
+# Change variables in SCM-Manager configuration
+# Configure Nginx and reload
+sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
+
 cd /tmp 
 wget $SCMMANAGERAPP 
 tar xzvf /tmp/$SCMMANAGERAPPFILE
 mv /tmp/$SCMMANAGERAPPFILE /opt/yunohost/$scmname
 
-# Copy files to the right place
-sudo cp ../conf/default-scm-server /etc/default/scm-server
-sudo cp ../conf/init-scm-server /etc/init.d/scm-server
+
 
 sudo useradd -d $data_path scmserver
 sudo chown scmserver:scmserver $data_path
@@ -63,10 +69,7 @@ chown -R scmserver:scmserver /opt/scm-server/
 update-rc.d scm-server defaults
 
 
-# Change variables in SCM-Manager configuration
-# Configure Nginx and reload
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$scmname.conf
+
 
 
 # Reload Nginx and regenerate SSOwat conf
