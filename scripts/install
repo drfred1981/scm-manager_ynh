@@ -52,7 +52,7 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
 
 wget -P /tmp $SCMMANAGERAPP 
 tar xzvf /tmp/$SCMMANAGERAPPFILE
-mv /tmp/$SCMMANAGERAPPFILE/scm-server /opt/yunohost/scmmanager
+sudo mv /tmp/$SCMMANAGERAPPFILE/scm-server /opt/yunohost/scmmanager
 
 
 
@@ -66,7 +66,7 @@ sudo chmod -R 770 $data_path
 
 chmod +x /etc/init.d/scm-server
 chown -R scmserver:scmserver /opt/scm-server/
-update-rc.d scm-server defaults
+sudo update-rc.d scm-server defaults
 sudo service scm-server start
 
 # Add scm-server service to YunoHost's monitoring
