@@ -41,7 +41,9 @@ sudo mkdir -p $data_path
 
 # Install SCM-Manager
 
-cd /tmp && wget $SCMMANAGERAPP && tar xzvf $SCMMANAGERAPPFILE
+cd /tmp 
+wget $SCMMANAGERAPP 
+tar xzvf /tmp/$SCMMANAGERAPPFILE
 mv /tmp/$SCMMANAGERAPPFILE /opt/yunohost/$scmname
 
 # Copy files to the right place
