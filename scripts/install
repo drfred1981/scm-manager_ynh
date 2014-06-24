@@ -52,7 +52,7 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
 
 wget -P /tmp $SCMMANAGERAPP 
 tar xzvf /tmp/$SCMMANAGERAPPFILE
-sudo mv /tmp/$SCMMANAGERAPPFILE/scm-server /opt/yunohost/scmmanager
+sudo mv scm-server /opt/yunohost/scmmanager
 
 
 
@@ -64,8 +64,8 @@ sudo find $final_path -type d | xargs sudo chmod 775
 sudo chmod -R 770 $data_path
 
 
-chmod +x /etc/init.d/scm-server
-chown -R scmserver:scmserver /opt/scm-server/
+sudo chmod +x /etc/init.d/scm-server
+sudo chown -R scmserver:scmserver /opt/yunohost/scmmanager
 sudo update-rc.d scm-server defaults
 sudo service scm-server start
 
