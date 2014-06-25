@@ -10,5 +10,7 @@ sudo rm -rf /etc/default/scm-server
 sudo rm -rf /var/log/scmmanager
 sudo rm -rf /tmp/scmmanager*
 
+sudo apt-get remove --purge scm-server
+
 sudo yunohost service remove scmmanager
 sudo service nginx reload
