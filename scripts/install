@@ -6,12 +6,6 @@ path=$2
 user=$3
 
 
-SCMMANAGERAPP="http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.38/scm-server-1.38-app.tar.gz"
-SCMMANAGERAPPFILE="scm-server-1.38-app.tar.gz"
-
-
-
-
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
 if [[ ! $? -eq 0 ]]; then
@@ -28,45 +22,43 @@ if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
 
-# Install dependencies
-sudo apt-get install -y git
-sudo apt-get install -y openjdk-7-jre default-jre-headless
 
+# add the scm-manager repository
+echo 'deb http://maven.scm-manager.org/nexus/content/repositories/releases ./' > /etc/apt/sources.list.d/scmmanager.conf
+
+# install gpg key for the scm-manager repository
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com D742B261
+
+# update
+sudo apt-get update
+
+# install scm-server
+sudo apt-get install scm-server
 
 # Copy files to the right place
-final_path=/opt/yunohost/scmmanager
+final_path=/opt/scmmanager
 data_path=/home/yunohost.app/scmmanager
-sudo mkdir -p $final_path
 sudo mkdir -p $data_path
 
 # Install SCM-Manager
 
 # Copy files to the right place
-sudo cp ../conf/default-scm-server /etc/default/scm-server
-sudo cp ../conf/init-scm-server /etc/init.d/scm-server
+
 # Change variables in SCM-Manager configuration
 # Configure Nginx and reload
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
 
 
-wget -P /tmp $SCMMANAGERAPP 
-tar xzvf /tmp/$SCMMANAGERAPPFILE
-sudo mv scm-server scmmanager
-sudo mv scmmanager /opt/yunohost/
 
 
-sudo useradd -d $data_path scmserver
-sudo chown scmserver:scmserver $data_path
+sudo chown scm:scm $data_path
 sudo chmod 755 /home/yunohost.app
 sudo find $final_path -type f | xargs sudo chmod 664
 sudo find $final_path -type d | xargs sudo chmod 775
 sudo chmod -R 770 $data_path
 
 
-sudo chmod +x /etc/init.d/scm-server
-sudo chown -R scmserver:scmserver /opt/yunohost/scmmanager
-sudo update-rc.d scm-server defaults
 sudo service scm-server start
 
 # Add scm-server service to YunoHost's monitoring
