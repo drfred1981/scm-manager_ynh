@@ -19,7 +19,7 @@ fi
 sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain -a $path
+sudo yunohost app checkurl $domain$path -a scm
 if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
