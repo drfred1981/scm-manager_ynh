@@ -1,6 +1,6 @@
 {
     "name": "SCM-Manager",
-    "id": "scmmanager",
+    "id": "scm",
     "description": {
         "en": "The easiest way to share and manage your Git, Mercurial and Subversion repositories over http",
         "fr": "La facon la plus simple de gérer ses dépots Git, Mercurial et Subversion par http"
