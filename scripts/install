@@ -6,14 +6,8 @@ path=$2
 user=$3
 
 
-<<<<<<< HEAD
 SCMMANAGERAPPFILE="scm-webapp-1.40.war"
 
-
-
-
-=======
->>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
 if [[ ! $? -eq 0 ]]; then
@@ -25,7 +19,6 @@ fi
 sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
-<<<<<<< HEAD
 sudo yunohost app checkurl $domain$path -a scm
 if [[ ! $? -eq 0 ]]; then
     exit 1
