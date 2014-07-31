@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# Retrieve arguments
+domain=$1
+path=$2
+user=$3
+
+
+SCMMANAGERAPPFILE="scm-webapp-1.40.war"
+
+
+
+
+# Check user parameter
+sudo yunohost user list --json | grep -q "\"username\": \"$user\""
+if [[ ! $? -eq 0 ]]; then
+    echo "Wrong user"
+    exit 1
+fi
+
+
+sudo yunohost app setting scmmanager admin_user -v $user
+
+# Check domain/path availability
+sudo yunohost app checkurl $domain$path -a $scmname
+if [[ ! $? -eq 0 ]]; then
+    exit 1
+fi
+
+# Install dependencies
+sudo apt-get install -y git subversion 
+sudo apt-get install -y openjdk-7-jre default-jre-headless tomcat7 
+
+sudo service tomcat7 stop
+sudo cp ../sources/$SCMMANAGERAPPFILE /var/lib/tomcat7/webapps/scm.war
+sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
+
+
+data_path=/home/yunohost.app/scm
+sudo mkdir -p $data_path
+sudo chown -hR tomcat7:tomcat7 $data_path
+sudo chmod 775 $data_path
+
+sudo service tomcat7 start
+
+
+sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
+
+sudo service tomcat7 restart
+
+
+# Change variables in SCM-Manager configuration
+
+
+# Configure Nginx and reload
+sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
+
+
+
+
+
+# Reload Nginx and regenerate SSOwat conf
+sudo service nginx reload
+sudo yunohost app setting $path skipped_uris -v "/"
+sudo yunohost app ssowatconf
+
+
