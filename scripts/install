@@ -6,11 +6,14 @@ path=$2
 user=$3
 
 
+<<<<<<< HEAD
 SCMMANAGERAPPFILE="scm-webapp-1.40.war"
 
 
 
 
+=======
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
 if [[ ! $? -eq 0 ]]; then
@@ -22,11 +25,16 @@ fi
 sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
+<<<<<<< HEAD
 sudo yunohost app checkurl $domain$path -a scm
+=======
+sudo yunohost app checkurl $domain$path -a scmmanager
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
 
+<<<<<<< HEAD
 # Install dependencies
 sudo apt-get install -y git subversion 
 sudo apt-get install -y openjdk-7-jre default-jre-headless tomcat7 
@@ -34,21 +42,51 @@ sudo apt-get install -y openjdk-7-jre default-jre-headless tomcat7
 sudo service tomcat7 stop
 sudo cp ../sources/$SCMMANAGERAPPFILE /var/lib/tomcat7/webapps/scm.war
 sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
+=======
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 
+# add the scm-manager repository
+sudo sh -c "echo 'deb http://maven.scm-manager.org/nexus/content/repositories/releases ./' > /etc/apt/sources.list.d/scmmanager.conf"
 
+# install gpg key for the scm-manager repository
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com D742B261
+
+# update
+sudo apt-get update
+
+# install scm-server
+sudo apt-get install scm-server
+
+<<<<<<< HEAD
 data_path=/home/yunohost.app/scm
+=======
+# Copy files to the right place
+final_path=/opt/scmmanager
+data_path=/home/yunohost.app/scmmanager
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 sudo mkdir -p $data_path
 sudo chown -hR tomcat7:tomcat7 $data_path
 sudo chmod 775 $data_path
 
 sudo service tomcat7 start
 
+<<<<<<< HEAD
 
 sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
+=======
+# Copy files to the right place
+
+# Change variables in SCM-Manager configuration
+# Configure Nginx and reload
+sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
+
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
 
 sudo service tomcat7 restart
 
 
+<<<<<<< HEAD
 # Change variables in SCM-Manager configuration
 
 
@@ -57,12 +95,24 @@ sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scm.conf
 
 
+=======
+sudo chown scm:scm $data_path
+sudo chmod 755 /home/yunohost.app
+sudo find $final_path -type f | xargs sudo chmod 664
+sudo find $final_path -type d | xargs sudo chmod 775
+sudo chmod -R 770 $data_path
 
+
+sudo service scm-server start
+>>>>>>> 0e3d2ec54f979a5c5d193912ad1724da980c9128
+
+# Add scm-server service to YunoHost's monitoring
+sudo yunohost service add scm-server --log /var/log/scm-server/ --status "ps aux | grep scm-server | grep -v grep"
 
 
 # Reload Nginx and regenerate SSOwat conf
-sudo service nginx reload
-sudo yunohost app setting $path skipped_uris -v "/"
-sudo yunohost app ssowatconf
 
+sudo service scm-server restart
+sudo service nginx reload
+sudo yunohost app ssowatconf
 

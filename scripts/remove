@@ -5,10 +5,12 @@ sudo service scm-server stop
 sudo killall scm-server
 sudo update-rc.d scm-server disable
 
-sudo rm -f /etc/nginx/conf.d/$domain.d/scmmanager.conf
+sudo rm -f /etc/nginx/conf.d/$domain.d/scmmanager.list
 sudo rm -rf /etc/default/scm-server
 sudo rm -rf /var/log/scmmanager
 sudo rm -rf /tmp/scmmanager*
+
+sudo apt-get remove --purge scm-server
 
 sudo yunohost service remove scmmanager
 sudo service nginx reload
