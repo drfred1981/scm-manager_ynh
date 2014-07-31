@@ -6,10 +6,9 @@ path=$2
 user=$3
 
 
-SCMMANAGERAPP="http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.38/scm-server-1.38-app.tar.gz"
-SCMMANAGERAPPFILE="scm-server-1.38-app.tar.gz"
+SCMMANAGERAPPFILE="scm-webapp-1.40.war"
 
-scmname=scmmanager
+
 
 
 # Check user parameter
@@ -20,53 +19,42 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 
-sudo yunohost app setting $scmname admin_user -v $user
+sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a $scmname
+sudo yunohost app checkurl $domain$path -a scm
 if [[ ! $? -eq 0 ]]; then
     exit 1
 fi
 
 # Install dependencies
-sudo apt-get install -y git
-sudo apt-get install -y openjdk-7-jre default-jre-headless
+sudo apt-get install -y git subversion 
+sudo apt-get install -y openjdk-7-jre default-jre-headless tomcat7 
+
+sudo service tomcat7 stop
+sudo cp ../sources/$SCMMANAGERAPPFILE /var/lib/tomcat7/webapps/scm.war
+sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
 
 
-# Copy files to the right place
-final_path=/opt/yunohost/$scmname
-data_path=/home/yunohost.app/$scmname
-sudo mkdir -p $final_path
+data_path=/home/yunohost.app/scm
 sudo mkdir -p $data_path
+sudo chown -hR tomcat7:tomcat7 $data_path
+sudo chmod 775 $data_path
 
-# Install SCM-Manager
+sudo service tomcat7 start
 
-# Copy files to the right place
-sudo cp ../conf/default-scm-server /etc/default/scm-server
-sudo cp ../conf/init-scm-server /etc/init.d/scm-server
+
+sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
+
+sudo service tomcat7 restart
+
+
 # Change variables in SCM-Manager configuration
+
+
 # Configure Nginx and reload
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scmmanager.conf
-
-cd /tmp 
-wget $SCMMANAGERAPP 
-tar xzvf /tmp/$SCMMANAGERAPPFILE
-mv /tmp/$SCMMANAGERAPPFILE /opt/yunohost/$scmname
-
-
-
-sudo useradd -d $data_path scmserver
-sudo chown scmserver:scmserver $data_path
-sudo chmod 755 /home/yunohost.app
-sudo find $final_path -type f | xargs sudo chmod 664
-sudo find $final_path -type d | xargs sudo chmod 775
-sudo chmod -R 770 $data_path
-
-
-chmod +x /etc/init.d/scm-server
-chown -R scmserver:scmserver /opt/scm-server/
-update-rc.d scm-server defaults
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scm.conf
 
 
 
