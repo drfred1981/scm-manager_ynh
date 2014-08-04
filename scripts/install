@@ -16,7 +16,7 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 
-sudo yunohost app setting scmmanager admin_user -v $user
+sudo yunohost app setting scm admin_user -v $user
 
 # Check domain/path availability
 sudo yunohost app checkurl $domain$path -a scm
@@ -55,13 +55,6 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$path.conf
 
 
 sudo service tomcat7 restart
-
-
-
-
-# Configure Nginx and reload
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/scm.conf
 
 
 
