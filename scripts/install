@@ -63,7 +63,7 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$path.conf
 
 sudo service tomcat7 restart
 
-sudo yunohost app setting freshrss skipped_uris -v "/svn,/git"
+sudo yunohost app setting scm skipped_uris -v "/svn,/git"
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
