@@ -4,10 +4,18 @@
 domain=$1
 path=$2
 user=$3
-
+admin_passwd=$4
 
 SCMMANAGERAPPFILE="scm-webapp-1.40.war"
 
+SCMMANAGERAUTOLOGIN="scm-autologin-plugin-1.0.zip"
+
+
+# Check if admin password is not null
+if [ "$admin_passwd" = "" ]; then
+echo "Wrong password"
+    exit 1
+fi
 
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
@@ -45,16 +53,18 @@ sudo chmod 775 $data_path
 
 sudo service tomcat7 start
 sleep 20
-wget http://localhost:8080/scm/
+wget http://localhost:8080/scm/ 
 rm index.html
 sudo service tomcat7 stop
 # Change variables in SCM-Manager configuration
 
+sudo unzip ../sources/$SCMMANAGERAUTOLOGIN -d $data_path
+sudo chown -hR tomcat7:tomcat7 $data_path
+sudo chmod 775 $data_path
 
 sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
-
-
-
+sudo cp ../conf/autoLogin.xml /home/yunohost.app/scm/config/autoLogin.xml
+sudo cp ../conf/classpath.xml /home/yunohost.app/scm/config/classpath.xml
 
 # Configure Nginx and reload
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
