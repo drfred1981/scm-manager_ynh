@@ -8,6 +8,7 @@ user=$3
 
 SCMMANAGERAPPFILE="scm-webapp-1.40.war"
 
+
 # Check user parameter
 sudo yunohost user list --json | grep -q "\"username\": \"$user\""
 if [[ ! $? -eq 0 ]]; then
@@ -16,9 +17,10 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 
-sudo yunohost app setting scm admin_user -v $user
+sudo yunohost app setting scmmanager admin_user -v $user
 
 # Check domain/path availability
+
 sudo yunohost app checkurl $domain$path -a scm
 if [[ ! $? -eq 0 ]]; then
     exit 1
@@ -42,8 +44,13 @@ sudo chown -hR tomcat7:tomcat7 $data_path
 sudo chmod 775 $data_path
 
 sudo service tomcat7 start
-
+sleep 20
+wget http://localhost:8080/scm/
+rm index.html
+sudo service tomcat7 stop
 # Change variables in SCM-Manager configuration
+
+
 sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
 
 
@@ -56,9 +63,8 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$path.conf
 
 sudo service tomcat7 restart
 
-
+sudo yunohost app setting freshrss skipped_uris -v "/svn,/git"
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
 sudo yunohost app ssowatconf
-
