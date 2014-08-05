@@ -71,9 +71,28 @@ sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$path.conf
 
 
+#Add admin user
+YNH_ADMIN=true
+YNH_DATE=$(date +%s%N | cut -b1-13)
+YNH_DISPLAYNAME=$(sudo yunohost user info $user | grep "fullname: " | sed s/'fullname: '/''/g)
+YNH_MAIL=$(sudo yunohost user info $user | grep "mail: " | sed s/'mail: '/''/g)
+YNH_LOGIN=$user
+YNH_PASSWORD=$(echo -n $admin_passwd | sha1sum | sed s/'  -'/''/g)
+
+
+sudo sed -i "s/YNH_ADMIN/$YNH_ADMIN/g" ../conf/user.conf
+sudo sed -i "s/YNH_DATE/$YNH_DATE/g" ../conf/user.conf
+sudo sed -i "s/YNH_DISPLAYNAME/$YNH_DISPLAYNAME/g" ../conf/user.conf
+sudo sed -i "s/YNH_MAIL/$YNH_MAIL/g" ../conf/user.conf
+sudo sed -i "s/YNH_LOGIN/$YNH_LOGIN/g" ../conf/user.conf
+sudo sed -i "s/YNH_PASSWORD/$YNH_PASSWORD/g" ../conf/user.conf
+
+sudo sed -i "s/'</users>'/''/g" /home/yunohost.app/scm/config/users.xml
+
+
 sudo service tomcat7 restart
 
-sudo yunohost app setting scm skipped_uris -v "/svn,/git"
+sudo yunohost app setting scm skipped_uris -v "/svn,/git,/hg"
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
