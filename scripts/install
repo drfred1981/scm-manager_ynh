@@ -58,7 +58,9 @@ rm index.html
 sudo service tomcat7 stop
 # Change variables in SCM-Manager configuration
 
-sudo unzip ../sources/$SCMMANAGERAUTOLOGIN -d $data_path
+sudo mkdir -p $data_path/plugins
+sudo mkdir -p $data_path/config
+sudo unzip ../sources/$SCMMANAGERAUTOLOGIN -d $data_path/plugins
 sudo chown -hR tomcat7:tomcat7 $data_path
 sudo chmod 775 $data_path
 
