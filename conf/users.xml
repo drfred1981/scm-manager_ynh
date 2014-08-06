@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user-db>
+  <creationTime>YNH_DATE</creationTime>
+  <lastModified>YNH_DATE</lastModified>
+  <users>
+    <user>
+      <properties/>
+      <active>true</active>
+      <admin>true</admin>
+      <displayName>SCM Administrator</displayName>
+      <name>scmadmin</name>
+		<mail>YNH_MAIL</mail>
+        <creationDate>YNH_DATE</creationDate>
+        <lastModified>YNH_DATE</lastModified>
+        <password>YNH_PASSWORD</password>
+		<type>xml</type>
+    </user>
+    <user>
+            <properties/>
+            <active>true</active>
+            <admin>YNH_ADMIN</admin>
+            <displayName>YNH_DISPLAYNAME</displayName>
+            <name>YNH_LOGIN</name>
+            <mail>YNH_MAIL</mail>
+            <creationDate>YNH_DATE</creationDate>
+            <lastModified>YNH_DATE</lastModified>
+            <password>YNH_PASSWORD</password>
+            <type>xml</type>
+        </user>
+  </users>
+</user-db>
