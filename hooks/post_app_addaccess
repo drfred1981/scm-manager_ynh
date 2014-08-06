@@ -4,7 +4,6 @@ app=$1
 new_users=$2
 
 if [[ "scm" = "$app" ]];
-
 then
     sudo service tomcat7 stop
     echo $new_users | grep -q ","
@@ -19,6 +18,18 @@ YNH_DISPLAYNAME=$(sudo yunohost user info $user | grep "fullname: " | sed s/'ful
 YNH_MAIL=$(sudo yunohost user info $user | grep "mail: " | sed s/'mail: '/''/g)
 YNH_LOGIN=$user
 YNH_PASSWORD=$(echo -n $passwd | sha1sum | sed s/'  -'/''/g)
+sudo sed -i "s/YNH_ADMIN/$YNH_ADMIN/g" ../conf/user.conf
+sudo sed -i "s/YNH_DATE/$YNH_DATE/g" ../conf/user.conf
+sudo sed -i "s/YNH_DISPLAYNAME/$YNH_DISPLAYNAME/g" ../conf/user.conf
+sudo sed -i "s/YNH_MAIL/$YNH_MAIL/g" ../conf/user.conf
+sudo sed -i "s/YNH_LOGIN/$YNH_LOGIN/g" ../conf/user.conf
+sudo sed -i "s/YNH_PASSWORD/$YNH_PASSWORD/g" ../conf/user.conf
+	tab=$(cat ../user.conf)
+	xmlstarlet ed --subnode "/user-db/users" --type elem -n user -v "$tab" /home/yunohost.app/scm/config/users.xml > /home/yunohost.app/scm/config/users.xml
+
+	sed  -i "s/\&lt;/\</g" /home/yunohost.app/scm/config/users.xml
+	sed  -i "s/\&gt;/\>/g" /home/yunohost.app/scm/config/users.xml
+
         done
 
 else

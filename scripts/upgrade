@@ -1,0 +1,9 @@
+#!/bin/bash
+SCMMANAGERAPPFILE="scm-webapp-1.40.war"
+sudo service tomcat7 stop
+sudo cp ../sources/$SCMMANAGERAPPFILE /var/lib/tomcat7/webapps/scm.war
+
+sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
+sudo chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/
+
+sudo service tomcat7 start
