@@ -7,7 +7,6 @@ user=$3
 admin_passwd=$4
 
 SCMMANAGERAPPFILE="scm-webapp-1.40.war"
-
 SCMMANAGERAUTOLOGIN="scm-autologin-plugin-1.0.zip"
 
 
