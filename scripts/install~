@@ -97,8 +97,6 @@ sudo cp ../conf/config.xml /home/yunohost.app/scm/config/config.xml
 
 sudo service tomcat7 restart
 
-sudo yunohost service add tomcat7
-
 sudo yunohost app setting scm skipped_uris -v "/svn,/git,/hg"
 
 # Reload Nginx and regenerate SSOwat conf

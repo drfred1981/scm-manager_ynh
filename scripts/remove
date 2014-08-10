@@ -1,16 +1,12 @@
 #!/bin/bash
 
 domain=$(sudo yunohost app setting scmmanager domain)
-sudo service scm-server stop
-sudo killall scm-server
-sudo update-rc.d scm-server disable
+sudo service tomcat7 stop
+sudo rm /var/lib/tomcat7/webapps/scm.war
 
-sudo rm -f /etc/nginx/conf.d/$domain.d/scmmanager.list
-sudo rm -rf /etc/default/scm-server
-sudo rm -rf /var/log/scmmanager
-sudo rm -rf /tmp/scmmanager*
+sudo rm -f /etc/nginx/conf.d/$domain.d/scm.conf
 
-sudo apt-get remove --purge scm-server
+sudo service tomcat7 start
 
-sudo yunohost service remove scmmanager
+
 sudo service nginx reload

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<scm-config>
+    <admin-groups></admin-groups>
+    <admin-users></admin-users>
+    <base-url>http://YNH_DOMAIN:80/scm</base-url>
+    <force-base-url>false</force-base-url>
+    <forwardPort>80</forwardPort>
+    <login-attempt-limit>-1</login-attempt-limit>
+    <proxyPort>8080</proxyPort>
+    <proxyServer>proxy.mydomain.com</proxyServer>
+    <servername>localhost</servername>
+    <skip-failed-authenticators>false</skip-failed-authenticators>
+    <plugin-url>http://plugins.scm-manager.org/scm-plugin-backend/api/{version}/plugins?os={os}&amp;arch={arch}&amp;snapshot=false</plugin-url>
+    <login-attempt-limit-timeout>300</login-attempt-limit-timeout>
+    <enableSSL>false</enableSSL>
+    <enableProxy>false</enableProxy>
+    <enablePortForward>false</enablePortForward>
+    <sslPort>8181</sslPort>
+    <realmDescription>YNH_DOMAIN :: SCM Manager</realmDescription>
+    <enableRepositoryArchive>false</enableRepositoryArchive>
+    <disableGroupingGrid>false</disableGroupingGrid>
+    <dateFormat>YYYY-MM-DD HH:mm:ss</dateFormat>
+    <anonymousAccessEnabled>true</anonymousAccessEnabled>
+</scm-config>
+
