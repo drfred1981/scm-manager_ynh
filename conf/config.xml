@@ -2,7 +2,7 @@
 <scm-config>
     <admin-groups></admin-groups>
     <admin-users></admin-users>
-    <base-url>http://YNH_DOMAIN:80/scm</base-url>
+    <base-url>https://YNH_DOMAIN:80/scm</base-url>
     <force-base-url>false</force-base-url>
     <forwardPort>80</forwardPort>
     <login-attempt-limit>-1</login-attempt-limit>

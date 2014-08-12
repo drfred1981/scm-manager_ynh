@@ -60,8 +60,7 @@ sudo service tomcat7 stop
 sudo mkdir -p $data_path/plugins
 sudo mkdir -p $data_path/config
 sudo unzip ../sources/$SCMMANAGERAUTOLOGIN -d $data_path/plugins
-sudo chown -hR tomcat7:tomcat7 $data_path
-sudo chmod 775 $data_path
+
 
 sudo sh -c "echo 'scm.home = /home/yunohost.app/scm' >> /var/lib/tomcat7/webapps/scm/WEB-INF/classes/scm.properties"
 sudo cp ../conf/autoLogin.xml /home/yunohost.app/scm/config/autoLogin.xml
@@ -94,6 +93,9 @@ sudo rm /home/yunohost.app/scm/config/users.xml
 sudo rm /home/yunohost.app/scm/config/config.xml
 sudo cp ../conf/users.xml /home/yunohost.app/scm/config/users.xml
 sudo cp ../conf/config.xml /home/yunohost.app/scm/config/config.xml
+
+sudo chown -hR tomcat7:tomcat7 $data_path
+sudo chmod -R 775 $data_path
 
 sudo service tomcat7 restart
 

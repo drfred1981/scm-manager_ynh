@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<config>
-    <variable-name>X_REMOTE_USER</variable-name>
-    <groups></groups>
-    <allow-unknown>false</allow-unknown>
-    <email-domain></email-domain>
-</config>
