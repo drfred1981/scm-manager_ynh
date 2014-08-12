@@ -24,8 +24,7 @@ if [[ ! $? -eq 0 ]]; then
 fi
 
 
-sudo yunohost app setting scmmanager admin_user -v $user
-
+sudo yunohost app setting scm admin_user -v $user
 # Check domain/path availability
 
 sudo yunohost app checkurl $domain$path -a scm
