@@ -9,7 +9,7 @@
     <proxyPort>8080</proxyPort>
     <proxyServer>proxy.mydomain.com</proxyServer>
     <servername>localhost</servername>
-    <skip-failed-authenticators>false</skip-failed-authenticators>
+     <skip-failed-authenticators>true</skip-failed-authenticators>
     <plugin-url>http://plugins.scm-manager.org/scm-plugin-backend/api/{version}/plugins?os={os}&amp;arch={arch}&amp;snapshot=false</plugin-url>
     <login-attempt-limit-timeout>300</login-attempt-limit-timeout>
     <enableSSL>false</enableSSL>
