@@ -1,5 +1,5 @@
 #!/bin/bash
-SCMMANAGERAPPFILE="scm-webapp-1.40.war"
+SCMMANAGERAPPFILE="scm-webapp-1.41.war"
 sudo service tomcat7 stop
 sudo cp ../sources/$SCMMANAGERAPPFILE /var/lib/tomcat7/webapps/scm.war
 

@@ -6,7 +6,7 @@ path=$2
 user=$3
 admin_passwd=$4
 
-SCMMANAGERAPPFILE="scm-webapp-1.40.war"
+SCMMANAGERAPPFILE="scm-webapp-1.41.war"
 SCMMANAGERAUTOLOGIN="scm-autologin-plugin-1.0.zip"
 
 

@@ -38,7 +38,7 @@
             {
                 "name": "admin_passwd",
                 "ask": {
-                    "en": "Choose a password for Wordpress administrator"
+                    "en": "Choose a password for SCM-Manager administrator"
                 }
             }
         ]
