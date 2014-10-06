@@ -2,6 +2,6 @@
 <config>
     <variable-name>X_REMOTE_USER</variable-name>
     <groups></groups>
-    <allow-unknown>true</allow-unknown>
+    <allow-unknown>false</allow-unknown>
     <email-domain></email-domain>
 </config>
