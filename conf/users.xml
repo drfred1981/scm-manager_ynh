@@ -25,7 +25,7 @@
             <creationDate>YNH_DATE</creationDate>
             <lastModified>YNH_DATE</lastModified>
             <password>YNH_PASSWORD</password>
-            <type>autologin</type>
+            <type>xml</type>
         </user>
   </users>
 </user-db>
